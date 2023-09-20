@@ -295,10 +295,6 @@ function resetCalculator() {
   
 
   <div style="margin-bottom: 10px;"></div>
-  
-  
-
-</div>
 
 <div style="margin-bottom: 100px;"></div>
 
