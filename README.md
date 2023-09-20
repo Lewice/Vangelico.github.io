@@ -160,7 +160,7 @@
 
   alert('Order submitted!');
 
-  var discordWebhookURL = 'Replace me';
+  var discordWebhookURL = 'https://discord.com/api/webhooks/1154112405585023046/zG7g42xUk39GGS-Uk7UrWJBwpqc1jtnM6Ig2QUPdtf8huGz-8nxX8lOY64GMtbZeBUx8';
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', discordWebhookURL, true);
