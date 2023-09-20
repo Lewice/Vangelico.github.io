@@ -241,54 +241,54 @@ function resetCalculator() {
   <div style="margin-bottom: 10px;"></div>
   
   <div>
-    <input type="checkbox" id="uwueats" value="1000$">
+    <input type="checkbox" id="uwueats" value="150$">
     <label for="Velmachoice">Opal - 150$</label>
     <input type="number" value="1" min="1">
   </div>
   
   <div>
-    <input type="checkbox" id="Davechoice" value="3000$">
+    <input type="checkbox" id="Davechoice" value="300$">
     <label for="Davechoice">Citrine - 300$</label>
     <input type="number" value="1" min="1">
   </div>
   
   <div>
-    <input type="checkbox" id="Davechoice" value="8000$">
+    <input type="checkbox" id="Davechoice" value="300$">
     <label for="Davechoice">Amethyst - 300$</label>
     <input type="number" value="1" min="1">
   </div>
   
   <div>
-    <input type="checkbox" id="Davechoice" value="3000$">
+    <input type="checkbox" id="Davechoice" value="350$">
     <label for="Davechoice">Sapphire  - 350$</label>
     <input type="number" value="1" min="1">
   </div>
   
   <div>
-    <input type="checkbox" id="Davechoice" value="8000$">
+    <input type="checkbox" id="Davechoice" value="450$">
     <label for="Davechoice">Ruby  - 450$</label>
     <input type="number" value="1" min="1">
   </div>
   <div>
-    <input type="checkbox" id="Davechoice" value="3000$">
+    <input type="checkbox" id="Davechoice" value="600$">
     <label for="Davechoice">Emerald - 600$</label>
     <input type="number" value="1" min="1">
   </div>
   
   <div>
-    <input type="checkbox" id="Davechoice" value="8000$">
+    <input type="checkbox" id="Davechoice" value="1100$">
     <label for="Davechoice">Diamond - 1100$</label>
     <input type="number" value="1" min="1">
   </div>
   
   <div>
-    <input type="checkbox" id="Davechoice" value="3000$">
+    <input type="checkbox" id="Davechoice" value="300$">
     <label for="Davechoice">Gold  - 300$</label>
     <input type="number" value="1" min="1">
   </div>
   
   <div>
-    <input type="checkbox" id="Davechoice" value="8000$">
+    <input type="checkbox" id="Davechoice" value="125$">
     <label for="Davechoice">Silver  - 125$</label>
     <input type="number" value="1" min="1">
   </div>
