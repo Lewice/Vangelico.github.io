@@ -236,7 +236,7 @@ function resetCalculator() {
 
   <div style="margin-bottom: 10px;"></div>
   
-  <h3>Engine Upgrades</h3>
+  <h3>Gems</h3>
 
   <div style="margin-bottom: 10px;"></div>
   
