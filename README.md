@@ -84,116 +84,124 @@
   </style>
   <script>
     function calculateTotal() {
-    var total = 0;
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      var total = 0;
+      var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
-    checkboxes.forEach(function(checkbox) {
-      var quantityInput = checkbox.parentNode.querySelector('input[type="number"]');
-      var quantity = parseInt(quantityInput.value);
-      var price = parseFloat(checkbox.value);
+      checkboxes.forEach(function (checkbox) {
+        var quantityInput = checkbox.parentNode.querySelector('input[type="number"]');
+        var quantity = parseInt(quantityInput.value);
+        var price = parseFloat(checkbox.value);
 
-      if (checkbox.value === '-25%') {
-        var itemPrice = total * 0.25;
-        total -= itemPrice;
-      } else if (checkbox.value === '-30%') {
-        var itemPrice = total * 0.3;
-        total -= itemPrice;
-      } else if (checkbox.value === '-50%') {
-        var itemPrice = total * 0.5;
-        total -= itemPrice;
-      } else {
-        total += price * quantity;
-      }
-    });
+        if (checkbox.value === '-5%') {
+          var itemPrice = price * quantity * 0.05;
+          total += price * quantity - itemPrice;
+        } else if (checkbox.value === '-10%') {
+          var itemPrice = price * quantity * 0.10;
+          total += price * quantity - itemPrice;
+        } else {
+          total += price * quantity;
+        }
+      });
 
-    var totalElement = document.getElementById('total');
-    totalElement.textContent = total.toFixed(2);
+      var totalElement = document.getElementById('total');
+      totalElement.textContent = total.toFixed(2);
 
-    var discountTotalElement = document.getElementById('discount-total');
-    var discount = total * 0.08;
-    discountTotalElement.textContent = discount.toFixed(2);
-  }
+      var discountTotalElement = document.getElementById('discount-total');
+      var discount5Percent = total * 0.05;
+      var discount10Percent = total * 0.10;
+
+      discountTotalElement.innerHTML = `
+        5% Commission: $${discount5Percent.toFixed(2)}<br>
+        10% Commission: $${discount10Percent.toFixed(2)}
+      `;
+    }
 
 
     
     function submitOrder() {
-    var name = document.getElementById('name').value;
-    if (name.trim() === '') {
-      alert('Please enter a name.');
-      return;
-    }
-
-    // Collect selected items and their quantities
-    var selectedItems = [];
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    checkboxes.forEach(function (checkbox) {
-      var itemName = checkbox.nextElementSibling.textContent;
-      var quantityInput = checkbox.parentNode.querySelector('input[type="number"]');
-      var quantity = parseInt(quantityInput.value);
-      var price = parseFloat(checkbox.value);
-      selectedItems.push({ name: itemName, quantity: quantity, price: price });
-    });
-
-    var total = 0;
-    var discountTotal = 0;
-
-    selectedItems.forEach(function (item) {
-      if (item.price < 0) {
-        var discountPercentage = Math.abs(item.price);
-        var itemDiscount = total * (discountPercentage / 100);
-        discountTotal += itemDiscount;
-      } else {
-        total += item.price * item.quantity;
-      }
-    });
-
-    var commission = (total * 0.05).toFixed(2);
-    var totalWithDiscount = total - discountTotal;
-
-    alert('Order submitted!');
-
-    var discordWebhookURL = 'https://discord.com/api/webhooks/1150577363499884695/q-F7MVW_UPghvq1ZJFfxDoOYF-PHsTH5AtMDOcqsSPc3VoapWEtWycynZAEAQnKUr6v8';
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', discordWebhookURL, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    var message = {
-      content: 'New order!',
-      embeds: [{
-        title: 'Order Details',
-        fields: [
-          {
-            name: 'Name',
-            value: name,
-            inline: true
-          },
-          {
-            name: 'Total',
-            value: '$' + totalWithDiscount.toFixed(2),
-            inline: true
-          },
-          {
-            name: 'Discount Total',
-            value: '$' + discountTotal.toFixed(2),
-            inline: true
-          },
-          {
-            name: 'Commission (5%)',
-            value: '$' + commission,
-            inline: true
-          },
-          {
-            name: 'Ordered Items',
-            value: selectedItems.map(item => `${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`).join('\n'),
-            inline: false
-          }
-        ]
-      }]
-    };
-
-    xhr.send(JSON.stringify(message));
+  var name = document.getElementById('name').value;
+  if (name.trim() === '') {
+    alert('Please enter a name.');
+    return;
   }
+
+  // Collect selected items and their quantities
+  var selectedItems = [];
+  var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+  checkboxes.forEach(function (checkbox) {
+    var itemName = checkbox.nextElementSibling.textContent;
+    var quantityInput = checkbox.parentNode.querySelector('input[type="number"]');
+    var quantity = parseInt(quantityInput.value);
+    var price = parseFloat(checkbox.value);
+    selectedItems.push({ name: itemName, quantity: quantity, price: price });
+  });
+
+  var total = 0;
+  var discount5PercentTotal = 0;
+  var discount10PercentTotal = 0;
+
+  selectedItems.forEach(function (item) {
+    if (item.price < 0) {
+      var discountPercentage = Math.abs(item.price);
+      var itemDiscount = item.price < -5 ? item.price * item.quantity * 0.05 : item.price * item.quantity * 0.10;
+      if (item.price < -5) {
+        discount5PercentTotal += itemDiscount;
+      } else {
+        discount10PercentTotal += itemDiscount;
+      }
+      total += item.price * item.quantity;
+    } else {
+      total += item.price * item.quantity;
+    }
+  });
+
+  var commission5Percent = (total * 0.05).toFixed(2);
+  var commission10Percent = (total * 0.10).toFixed(2);
+
+  alert('Order submitted!');
+
+  var discordWebhookURL = 'https://discord.com/api/webhooks/1115717872002551860/QeP0olu8qsHp7pE0XxHqB7dTK2c9i7hqA1vX4LB8ogLAw14NBj08zLN--8K9hvHeB0hO';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', discordWebhookURL, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  var message = {
+    content: 'New order!',
+    embeds: [{
+      title: 'Order Details',
+      fields: [
+        {
+          name: 'Name',
+          value: name,
+          inline: true
+        },
+        {
+          name: 'Total',
+          value: '$' + total.toFixed(2),
+          inline: true
+        },
+        {
+          name: '5% Commission',
+          value: '$' + commission5Percent,
+          inline: true
+        },
+        {
+          name: '10% Commission',
+          value: '$' + commission10Percent,
+          inline: true
+        },
+        {
+          name: 'Ordered Items',
+          value: selectedItems.map(item => `${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`).join('\n'),
+          inline: false
+        }
+      ]
+    }]
+  };
+
+  xhr.send(JSON.stringify(message));
+}
 
 function resetCalculator() {
   var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -303,14 +311,14 @@ function resetCalculator() {
 <div style="margin-bottom: 25px;"></div>
  
 <div class="total-box">
-  <span>Total: $</span>
-  <span id="total">0.00</span>
-</div>
+    <span>Total: $</span>
+    <span id="total">0.00</span>
+  </div>
 
-<div class="total-box">
-  <span>Commision (5%): $</span>
-  <span id="discount-total">0.00</span>
-</div>
+  <div class="total-box">
+    <span>Commission:</span>
+    <div id="discount-total"></div>
+  </div>
 
 
 
@@ -325,7 +333,4 @@ function resetCalculator() {
   <button class="submit-button" onclick="submitAndReset()">Submit Order</button>
   <button class="reset-button" onclick="resetCalculator()">Reset</button>
 
- 
-  
-  
   <div style="margin-bottom: 10px;"></div>
