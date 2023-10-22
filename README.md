@@ -298,6 +298,54 @@ function resetCalculator() {
     <label for="Davechoice">iron  - 1$</label>
     <input type="number" value="1" min="1">
   </div>
+
+  <div>
+    <input type="checkbox" id="Davechoice" value="1$">
+    <label for="Davechoice">Heavy Glue  - 1$</label>
+    <input type="number" value="1" min="1">
+  </div>
+  
+  <div>
+    <input type="checkbox" id="Davechoice" value="1$">
+    <label for="Davechoice">Rubber  - 1$</label>
+    <input type="number" value="1" min="1">
+  </div>
+
+  <div>
+    <input type="checkbox" id="Davechoice" value="1$">
+    <label for="Davechoice">Plastic  - 1$</label>
+    <input type="number" value="1" min="1">
+  </div>
+
+  <div>
+    <input type="checkbox" id="Davechoice" value="1$">
+    <label for="Davechoice">Copper Wire  - 1$</label>
+    <input type="number" value="1" min="1">
+  </div>
+
+  <div>
+    <input type="checkbox" id="Davechoice" value="1$">
+    <label for="Davechoice">Electronic Parts  - 1$</label>
+    <input type="number" value="1" min="1">
+  </div>
+  
+  <div>
+    <input type="checkbox" id="Davechoice" value="1$">
+    <label for="Davechoice">Glue  - 1$</label>
+    <input type="number" value="1" min="1">
+  </div>
+
+  <div>
+    <input type="checkbox" id="Davechoice" value="1$">
+    <label for="Davechoice">Salavaged parts  - 1$</label>
+    <input type="number" value="1" min="1">
+  </div>
+
+  <div>
+    <input type="checkbox" id="Davechoice" value="1$">
+    <label for="Davechoice">Scrap Metal  - 1$</label>
+    <input type="number" value="1" min="1">
+  </div>
   
 
   <div style="margin-bottom: 10px;"></div>
