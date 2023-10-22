@@ -365,10 +365,7 @@ function resetCalculator() {
     <span id="total">0.00</span>
   </div>
 
-  <div class="total-box">
-    <span>Commission:</span>
-    <div id="discount-total"></div>
-  </div>
+  
 
 
 
