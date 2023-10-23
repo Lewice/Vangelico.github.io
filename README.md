@@ -11,24 +11,24 @@
       height: 150vh;
       text-align: center;
     }
-	.total-box {
-		display: flex;
-		justify-content: center; /* Center horizontally */
-		align-items: center; /* Center vertically */
-		margin-top: 20px;
-	}}
-	
-	 .calculate-button {
+    .total-box {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        margin-top: 20px;
+    }}
+    
+     .calculate-button {
       width: 150px; /* Adjust the desired width */
       height: 50px; /* Adjust the desired height */
     }
-	
-	.submit-button {
+    
+    .submit-button {
       width: 150px; /* Adjust the desired width */
       height: 40px; /* Adjust the desired height */
     }
-	
-	.reset-button {
+    
+    .reset-button {
       width: 150px; /* Adjust the desired width */
       height: 30px; /* Adjust the desired height */
     }
@@ -40,8 +40,8 @@
     h2 {
       margin-top: 20px;
     }
-	
-	h3 {
+    
+    h3 {
       border: 1px solid black; /* Adjust the border style as needed */
       padding: 5px; /* Add padding to create space around the heading */
     }
@@ -71,8 +71,8 @@
       gap: 10px;
       margin-top: 20px;
     }
-	
-	.menu-items div img {
+    
+    .menu-items div img {
       width: 50px; /* Adjust the desired width */
       height: 50px; /* Adjust the desired height */
       margin-left: 10px; /* Add margin as per your preference */
@@ -80,41 +80,28 @@
     {
     button {
       margin-top: 20px;
-	}}}}}}
+    }}}}}}
   </style>
   <script>
     function calculateTotal() {
-      var total = 0;
-      var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    var total = 0;
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
-      checkboxes.forEach(function (checkbox) {
+    checkboxes.forEach(function (checkbox) {
         var quantityInput = checkbox.parentNode.querySelector('input[type="number"]');
         var quantity = parseInt(quantityInput.value);
         var price = parseFloat(checkbox.value);
+        total += price * quantity;
+    });
 
-        if (checkbox.value === '-5%') {
-          var itemPrice = price * quantity * 0.05;
-          total += price * quantity - itemPrice;
-        } else if (checkbox.value === '-10%') {
-          var itemPrice = price * quantity * 0.10;
-          total += price * quantity - itemPrice;
-        } else {
-          total += price * quantity;
-        }
-      });
+    var commission = total * 0.10; // Calculate 10% commission
 
-      var totalElement = document.getElementById('total');
-      totalElement.textContent = total.toFixed(2);
+    var totalElement = document.getElementById('total');
+    totalElement.textContent = total.toFixed(2);
 
-      var discountTotalElement = document.getElementById('discount-total');
-      var discount5Percent = total * 0.05;
-      var discount10Percent = total * 0.10;
-
-      discountTotalElement.innerHTML = `
-        5% Commission: $${discount5Percent.toFixed(2)}<br>
-        10% Commission: $${discount10Percent.toFixed(2)}
-      `;
-    }
+    var commissionTotalElement = document.getElementById('commission-total');
+    commissionTotalElement.textContent = commission.toFixed(2);
+}
 
 
     
@@ -217,19 +204,19 @@ function resetCalculator() {
   
   document.getElementById('total').textContent = '0.00';
 }
-	function submitAndReset() {
-	submitOrder();
-	resetCalculator();
+    function submitAndReset() {
+    submitOrder();
+    resetCalculator();
 }
 
   </script>
 </head>
 <body>
-	
+    
 <div style="margin-bottom: 25px;"></div>
  
 <body style="background-color:Grey;">
-	<img src="Vangelico.png" alt="Company Logo!">
+    <img src="Vangelico.png" alt="Company Logo!">
   <h1>Menu Calculator</h1>
   
   <h2>Menu Items</h2>
@@ -292,6 +279,8 @@ function resetCalculator() {
     <label for="Davechoice">Silver  - 125$</label>
     <input type="number" value="1" min="1">
   </div>
+  
+  <h3> Materials</h3>
 
   <div>
     <input type="checkbox" id="Davechoice" value="1$">
@@ -363,11 +352,11 @@ function resetCalculator() {
 <div class="total-box">
     <span>Total: $</span>
     <span id="total">0.00</span>
-  </div>
+</div>
 
-  <div class="total-box">
-  <span>Commision (10%): $</span>
-  <span id="discount-total">0.00</span>
+<div class="total-box">
+    <span>Commission (10%): $</span>
+    <span id="commission-total">0.00</span>
 </div>
 
   
