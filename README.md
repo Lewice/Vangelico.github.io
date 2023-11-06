@@ -169,11 +169,6 @@
           inline: true
         },
         {
-          name: '5% Commission',
-          value: '$' + commission5Percent,
-          inline: true
-        },
-        {
           name: '10% Commission',
           value: '$' + commission10Percent,
           inline: true
