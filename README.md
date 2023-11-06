@@ -350,7 +350,7 @@ function resetCalculator() {
 </div>
 
 <div class="total-box">
-    <span>Commission (10%): $</span>
+    <span>Commission (10%}: $</span>
     <span id="commission-total">0.00</span>
 </div>
 
