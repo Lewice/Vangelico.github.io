@@ -1,372 +1,296 @@
-
-<html>
+<html lang="en">
 <head>
-  <title>Menu Calculator</title>
-    <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 150vh;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Calculator and Form Submission</title>
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <style>
+    body, h2, form, label, p, button, select, input {
+      font-size: 8;
+      margin-right: 10px; /* Add a margin for spacing */
+    }
+
+    label {
+		display: block;
+		margin-bottom: 5px;
+	}
+
+    body, h2, form {
       text-align: center;
     }
-    .total-box {
-        display: flex;
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-        margin-top: 20px;
-    }}
-    
-     .calculate-button {
-      width: 150px; /* Adjust the desired width */
-      height: 50px; /* Adjust the desired height */
+
+    p {
+      text-align: center;
+      margin: 0; /* Remove default margin for <p> */
     }
-    
-    .submit-button {
-      width: 150px; /* Adjust the desired width */
-      height: 40px; /* Adjust the desired height */
-    }
-    
-    .reset-button {
-      width: 150px; /* Adjust the desired width */
-      height: 30px; /* Adjust the desired height */
-    }
-    
-    h1 {
-      margin-bottom: 20px;
-    }
-    
-    h2 {
-      margin-top: 20px;
-    }
-    
-    h3 {
-      border: 1px solid black; /* Adjust the border style as needed */
-      padding: 5px; /* Add padding to create space around the heading */
-    }
-    
-    .menu-items {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    
-    .menu-items div {
-      display: flex;
-      align-items: center;
-    }
-    
-    .total-box {
-      display: flex;
-      justify-content: flex-end;
-      align-self: Center;
-      margin-top: 20px;
-    }
-    
-    .button-container {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    .menu-items div img {
-      width: 50px; /* Adjust the desired width */
-      height: 50px; /* Adjust the desired height */
-      margin-left: 10px; /* Add margin as per your preference */
-    }
-    {
+
     button {
-      margin-top: 20px;
-    }}}}}}
+      margin-top: 10px;
+    }
+	body, h2 {
+	font-weight: bold;
+	}
+	body {
+	background-color: grey;
+	}
   </style>
   <script>
-    function calculateTotal() {
-    var total = 0;
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    function calculateTotals() {
+  let total = 0;
 
-    checkboxes.forEach(function (checkbox) {
-        var quantityInput = checkbox.parentNode.querySelector('input[type="number"]');
-        var quantity = parseInt(quantityInput.value);
-        var price = parseFloat(checkbox.value);
+  // Calculate total from selected items
+  const menuItems = document.querySelectorAll('.menu-item:checked');
+  menuItems.forEach(item => {
+    const price = parseFloat(item.dataset.price);
+    const quantity = parseInt(item.nextElementSibling.value);
+
+    if (!isNaN(price) && !isNaN(quantity) && quantity > 0) {
+      // Exclude "Mystery Box" from discounts
+      if (item.classList.contains('exclude-discount')) {
         total += price * quantity;
-    });
+      } else {
+        total += price * quantity * (1 - ($("#discount").val() / 100));
+      }
+    }
+  });
 
-    var commission = total * 0.10; // Calculate 10% commission
+  // Change commission rate from 5% to 10%
+  const commission = total * 0.10;
 
-    var totalElement = document.getElementById('total');
-    totalElement.textContent = total.toFixed(2);
-
-    var commissionTotalElement = document.getElementById('commission-total');
-    commissionTotalElement.textContent = commission.toFixed(2);
+  document.getElementById('total').innerText = total.toFixed(2);
+  document.getElementById('commission').innerText = commission.toFixed(2);
 }
 
-
-    
-    function submitOrder() {
-  var name = document.getElementById('name').value;
-  if (name.trim() === '') {
-    alert('Please enter a name.');
+    function SubForm() {
+  // Check if the employee name is provided
+  const employeeName = $("#employeeName").val();
+  if (employeeName.trim() === "") {
+    alert("Employee Name is required!");
     return;
   }
 
-  // Collect selected items and their quantities
-  var selectedItems = [];
-  var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-  checkboxes.forEach(function (checkbox) {
-    var itemName = checkbox.nextElementSibling.textContent;
-    var quantityInput = checkbox.parentNode.querySelector('input[type="number"]');
-    var quantity = parseInt(quantityInput.value);
-    var price = parseFloat(checkbox.value);
-    selectedItems.push({ name: itemName, quantity: quantity, price: price });
-  });
+  // Get selected menu items and quantities
+  const orderedItems = [];
+  const menuItems = document.querySelectorAll('.menu-item:checked');
+  menuItems.forEach(item => {
+    const itemName = item.parentNode.textContent.trim();
+    const price = parseFloat(item.dataset.price);
+    const quantity = parseInt(item.nextElementSibling.value);
 
-  var total = 0;
-  var discount5PercentTotal = 0;
-  var discount10PercentTotal = 0;
-
-  selectedItems.forEach(function (item) {
-    if (item.price < 0) {
-      var discountPercentage = Math.abs(item.price);
-      var itemDiscount = item.price < -5 ? item.price * item.quantity * 0.05 : item.price * item.quantity * 0.10;
-      if (item.price < -5) {
-        discount5PercentTotal += itemDiscount;
-      } else {
-        discount10PercentTotal += itemDiscount;
-      }
-      total += item.price * item.quantity;
-    } else {
-      total += item.price * item.quantity;
+    if (!isNaN(price) && !isNaN(quantity) && quantity > 0) {
+      orderedItems.push({
+        name: itemName,
+        price: price,
+        quantity: quantity
+      });
     }
   });
 
-  var commission5Percent = (total * 0.05).toFixed(2);
-  var commission10Percent = (total * 0.10).toFixed(2);
+  // Calculate total and commission
+  const total = parseFloat($("#total").text());
+  const commission = parseFloat($("#commission").text());
+  const discount = parseFloat($("#discount").val());
 
-  alert('Order submitted!');
+  // Prepare data for API submission
+  const formData = {
+    "Employee Name": employeeName,
+    "Total": total.toFixed(2),
+    "Commission": commission.toFixed(2),
+    "Items Ordered": JSON.stringify(orderedItems),
+    "Discount Applied": discount
+  };
 
-  var discordWebhookURL = 'https://discord.com/api/webhooks/1154112405585023046/zG7g42xUk39GGS-Uk7UrWJBwpqc1jtnM6Ig2QUPdtf8huGz-8nxX8lOY64GMtbZeBUx8';
+  // Form Submission Logic for Spreadsheet
+  $.ajax({
+    url: "https://api.apispreadsheets.com/data/5S6sd3ULAqiqAmBZ/",
+    type: "post",
+    data: formData,
+    headers: {
+      accessKey: "a5dd457651e43fbb8e24c645829b7c1f",
+      secretKey: "d310a5b9fef212f045462e9be7a09743",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    success: function () {
+      alert("Form Data Submitted to Spreadsheet and Discord :)");
+      resetForm();
+    },
+    error: function () {
+      alert("There was an error :(");
+    }
+  });
 
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', discordWebhookURL, true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-
-  var message = {
-    content: 'New order!',
+  // Prepare data for Discord webhook
+  const discordData = {
+    username: "Vangelico Employee Recipts",
+    content: `New order submitted by ${employeeName}`,
     embeds: [{
-      title: 'Order Details',
+      title: "Order Details",
       fields: [
-        {
-          name: 'Name',
-          value: name,
-          inline: true
-        },
-        {
-          name: 'Total',
-          value: '$' + total.toFixed(2),
-          inline: true
-        },
-        {
-          name: '10% Commission',
-          value: '$' + commission10Percent,
-          inline: true
-        },
-        {
-          name: 'Ordered Items',
-          value: selectedItems.map(item => `${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`).join('\n'),
-          inline: false
-        }
-      ]
+        { name: "Employee Name", value: employeeName, inline: true },
+        { name: "Total", value: `$${total.toFixed(2)}`, inline: true },
+        { name: "Commission", value: `$${commission.toFixed(2)}`, inline: true },
+        { name: "Discount Applied", value: `${discount}%`, inline: true },
+        { name: "Items Ordered", value: orderedItems.map(item => `${item.quantity}x ${item.name}`).join('\n') }
+      ],
+      color: 0x00ff00 // You can customize the color
     }]
   };
 
-  xhr.send(JSON.stringify(message));
+  // Form Submission Logic for Discord webhook
+  $.ajax({
+    url: "https://discord.com/api/webhooks/1154112405585023046/zG7g42xUk39GGS-Uk7UrWJBwpqc1jtnM6Ig2QUPdtf8huGz-8nxX8lOY64GMtbZeBUx8", // Replace with your Discord webhook URL
+    type: "post",
+    contentType: "application/json",
+    data: JSON.stringify(discordData),
+    success: function () {
+      // Do nothing specific for Discord success
+    },
+    error: function () {
+      console.error("Error sending data to Discord :(");
+    }
+  });
+
+  // Reset checkboxes and quantity inputs
+  $('.menu-item').prop('checked', false);
+  $('.quantity').val(1);
+
+  // Reset totals
+  document.getElementById('total').innerText = '';
+  document.getElementById('commission').innerText = '';
+  // Reset discount dropdown to default
+  $("#discount").val("0");
 }
 
-function resetCalculator() {
-  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  var quantityInputs = document.querySelectorAll('input[type="number"]');
-  
-  checkboxes.forEach(function(checkbox) {
-    checkbox.checked = false;
-  });
-  
-  quantityInputs.forEach(function(quantityInput) {
-    quantityInput.value = 1;
-  });
-  
-  document.getElementById('total').textContent = '0.00';
-}
-    function submitAndReset() {
-    submitOrder();
-    resetCalculator();
-}
+    function resetForm() {
+      // Reset checkboxes and quantity inputs
+      $('.menu-item').prop('checked', false);
+      $('.quantity').val(1);
 
+      // Reset totals
+      document.getElementById('total').innerText = '';
+      document.getElementById('commission').innerText = '';
+      // Reset discount dropdown to default
+      $("#discount").val("0");
+    }
   </script>
 </head>
 <body>
-    
-<div style="margin-bottom: 25px;"></div>
- 
-<body style="background-color:Grey;">
-    <img src="Vangelico.png" alt="Company Logo!">
-  <h1>Menu Calculator</h1>
-  
-  <h2>Menu Items</h2>
 
-  <div style="margin-bottom: 10px;"></div>
-  
   <h3>Gems</h3>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="150"> Opal - 150$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="300"> Citrine - 300$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="300"> Amethyst - 300$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1000"> Sapphire  - 350$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="3000"> Ruby  - 450$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="5000"> Emerald - 600$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1000"> Diamond - 1100$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="4000"> Gold  - 300$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="7000"> Silver  - 125$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
 
-  <div style="margin-bottom: 10px;"></div>
-  
-  <div>
-    <input type="checkbox" id="uwueats" value="150$">
-    <label for="Velmachoice">Opal - 150$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="300$">
-    <label for="Davechoice">Citrine - 300$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="300$">
-    <label for="Davechoice">Amethyst - 300$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="350$">
-    <label for="Davechoice">Sapphire  - 350$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="450$">
-    <label for="Davechoice">Ruby  - 450$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  <div>
-    <input type="checkbox" id="Davechoice" value="600$">
-    <label for="Davechoice">Emerald - 600$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="1100$">
-    <label for="Davechoice">Diamond - 1100$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="300$">
-    <label for="Davechoice">Gold  - 300$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="125$">
-    <label for="Davechoice">Silver  - 125$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <h3> Materials</h3>
-
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Iron  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Heavy Glue  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Rubber  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Plastic  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Copper Wire  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Electronic Parts  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Glue  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Salavaged parts  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-
-  <div>
-    <input type="checkbox" id="Davechoice" value="1$">
-    <label for="Davechoice">Scrap Metal  - 1$</label>
-    <input type="number" value="1" min="1">
-  </div>
-  
-
-  <div style="margin-bottom: 10px;"></div>
-
-<div style="margin-bottom: 100px;"></div>
-
-<div>
-    <label for="name">Employees 's Name:</label>
-    <input type="text" id="name">
-  </div>
-  
-
-<div style="margin-bottom: 25px;"></div>
- 
-<div class="total-box">
-    <span>Total: $</span>
-    <span id="total">0.00</span>
-</div>
-
-<div class="total-box">
-    <span>Commission (10%}: $</span>
-    <span id="commission-total">0.00</span>
-</div>
-
-  
+	
+	<h3>Materials</h3>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1"> Iron  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1"> Heavy Glue  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1"> Rubber  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1"> Plastic  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1"> Copper Wire  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+	<label>
+      <input type="checkbox" class="menu-item" data-price="1"> Electronic Parts  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1"> Glue  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+	<label>
+      <input type="checkbox" class="menu-item" data-price="1"> Salavaged parts  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+    <label>
+      <input type="checkbox" class="menu-item" data-price="1"> Car Polish(1-2 days) - $1000
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+	<label>
+      <input type="checkbox" class="menu-item" data-price="1"> Scrap Metal  - 1$
+      <input type="number" class="quantity" value="1" min="1">
+    </label>
+	
+	
+	
+	
+	
+	
+	
+	<div style="margin-bottom: 30px;"></div>
+	
+	<label for="discount">Select Discount:</label>
+    <select id="discount" onchange="calculateTotals()">
+      <option value="0">No Discount</option>
+      
+    </select>
+	
+	<div style="margin-bottom: 30px;"></div>
+	
 
 
+    <label for="employeeName">Employee Name:</label>
+    <input type="text" id="employeeName" required>
+	
+	<div style="margin-bottom: 30px;"></div>
+	
+	
 
+    <p>Total: $<span id="total"></span></p>
+    <p>Commission (10%): $<span id="commission"></span></p>
+	
+	<div style="margin-bottom: 30px;"></div>
 
- 
-  
-  
-  <div style="margin-bottom: 45px;"></div>
-  
+    <button type="button" onclick="calculateTotals()">Calculate</button>
+    <button type="button" onclick="SubForm()">Submit</button>
+    <button type="button" onclick="resetForm()">Reset</button>
+  </form>
 
-  <button class="calculate-button" onclick="calculateTotal()">Calculate Total</button>
-  <button class="submit-button" onclick="submitAndReset()">Submit Order</button>
-  <button class="reset-button" onclick="resetCalculator()">Reset</button>
-
-  <div style="margin-bottom: 10px;"></div>
+</body>
+</html>
