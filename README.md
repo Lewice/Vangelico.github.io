@@ -190,27 +190,27 @@
       <input type="number" class="quantity" value="1" min="1">
     </label>
     <label>
-      <input type="checkbox" class="menu-item" data-price="1000"> Sapphire  - 350$
+      <input type="checkbox" class="menu-item" data-price="350"> Sapphire  - 350$
       <input type="number" class="quantity" value="1" min="1">
     </label>
     <label>
-      <input type="checkbox" class="menu-item" data-price="3000"> Ruby  - 450$
+      <input type="checkbox" class="menu-item" data-price="450"> Ruby  - 450$
       <input type="number" class="quantity" value="1" min="1">
     </label>
     <label>
-      <input type="checkbox" class="menu-item" data-price="5000"> Emerald - 600$
+      <input type="checkbox" class="menu-item" data-price="600"> Emerald - 600$
       <input type="number" class="quantity" value="1" min="1">
     </label>
     <label>
-      <input type="checkbox" class="menu-item" data-price="1000"> Diamond - 1100$
+      <input type="checkbox" class="menu-item" data-price="1100"> Diamond - 1100$
       <input type="number" class="quantity" value="1" min="1">
     </label>
     <label>
-      <input type="checkbox" class="menu-item" data-price="4000"> Gold  - 300$
+      <input type="checkbox" class="menu-item" data-price="300"> Gold  - 300$
       <input type="number" class="quantity" value="1" min="1">
     </label>
     <label>
-      <input type="checkbox" class="menu-item" data-price="7000"> Silver  - 125$
+      <input type="checkbox" class="menu-item" data-price="125"> Silver  - 125$
       <input type="number" class="quantity" value="1" min="1">
     </label>
 
@@ -246,10 +246,6 @@
     </label>
 	<label>
       <input type="checkbox" class="menu-item" data-price="1"> Salavaged parts  - 1$
-      <input type="number" class="quantity" value="1" min="1">
-    </label>
-    <label>
-      <input type="checkbox" class="menu-item" data-price="1"> Car Polish(1-2 days) - $1000
       <input type="number" class="quantity" value="1" min="1">
     </label>
 	<label>
